@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <title>API Documents</title>
+    <meta name="keywords" content="API,Documents,ユビキタス環境制御システム" />
+    <meta name="description" content="UECS DB APIのマニュアルをまとめたページ" />
+    <link rel="stylesheet" href="css/style.css" type="text/css" />
+  </head>
+  <body>
+    <div id="outer">
+      <div id="header">
+	<div class="header-inner">
+	  <h1>UECS DB API Documents</h1>
+	  <p>UECS DB APIのマニュアルをまとめたページ</p>
+	</div>
+      </div>
+      <div id="content">
+	<div class="inner">
+	  <h2>概要</h2>
+	  <p>qwelzoサーバのDatabaseに蓄積されているUECSパケットをWeb APIにより取得する方法を紹介します。</p>
+	  <p>現在公開されているAPIは以下の2種類です。
+	    <ul>
+	      <li>getdatabyccm.php &nbsp; ccmtypeによる抽出</li>
+	      <li>getdatabyip.php &nbsp; IPアドレスによる抽出</li>
+	    </ul>
+	  </p>
+	  <h2>getdatabyccm.php</h2>
+	  <p>CCMTYPEによる抽出を行います。<br/>
+	  CSV形式を選択した場合には、ファイル保存されます。</p>
+	  <p class="wakucaption">入力書式</p>
+	  <p class="waku">
+	    http://qwelzo.ys-lab.tech/api/getdatabyccm.php?c=ccmtype<i>[&amp;s=開始日時][&amp;e=終了日時]
+	    [&amp;l=出力レコード数][&amp;r=出力順序][&amp;csv=出力書式]</i>
+	  </p>
+	  <table border="1">
+	    <tr><th>項目</th><th>値形式</th><th>意味・備考</th></tr>
+	    <tr><td>s:開始日時</td><td>YYYY-MM-DD hh:mm:ss</td><td>省略可能</td></tr>
+	    <tr><td>e:終了日時</td><td>YYYY-MM-DD hh:mm:ss</td><td>省略可能</td></tr>
+	    <tr><td>l:出力レコード数</td><td>正数</td><td>省略可能</td></tr>
+	    <tr><td rowspan="2">r:出力順序</td><td>無記入</td><td>日時の昇べき</td></tr>
+	    <tr><td>r=yes</td><td>日時の降べき</td></tr>
+	    <tr><td rowspan="2">csv:出力書式</td><td>無記入</td><td>JSON</td></tr>
+	    <tr><td>csv=yes</td><td>CSV</td></tr>
+	    <tr><td>c:CCMTYPE名</td><td>CCM命名規則に従う文字列</td><td>省略不可</td></tr>
+	  </table>
+	  <p>[...]内は省略可能。省略時の値は以下の通り<br>
+	    <ul>
+	      <li>開始日時：終了時刻の24時間前</li>
+	      <li>終了日時：現在日時</li>
+	      <li>出力レコード数：100レコード</li>
+	      <li>出力順序：昇べき</li>
+	      <li>出力書式：JSON</li>
+	    </ul>
+	  </p>
+	  <p class="wakucaption">出力書式(JSON)</p>
+	  <p class="waku">
+	    {"tod":"2023-10-13 22:59:05","ccmtype":"cnd.mIC","room":"1","region":"2","ord":"11","priority":"15","value":"0","ip":"192.168.120.150","id":"741081208"},
+	  </p>
+	  <p class="wakucaption">出力書式(CSV)</p>
+	  <p class="waku">
+tod,ccmtype,room,region,ord,priority,ip,value,id<br/>
+2023-10-13 23:27:01,cnd.mIC,1,2,11,15,192.168.120.150,0,741127706<br/>
+2023-10-13 23:27:02,cnd.mIC,1,2,11,15,192.168.120.150,0,741127763<br/>
+	  </p>
+	  <br/><br/>
+	  <h2>getdatabyip.php</h2>
+	  <p>IPアドレスによる抽出を行います。<br/>
+	  CSV形式を選択した場合には、ファイル保存されます。</p>
+	  <p class="wakucaption">入力書式</p>
+	  <p class="waku">
+	    http://qwelzo.ys-lab.tech/api/getdatabyip.php?i=ipaddress<i>[&amp;s=開始日時][&amp;e=終了日時]
+	    [&amp;l=出力レコード数][&amp;r=出力順序][&amp;csv=出力書式]</i>
+	  </p>
+	  <table border="1">
+	    <tr><th>項目</th><th>値形式</th><th>意味・備考</th></tr>
+	    <tr><td>s:開始日時</td><td>YYYY-MM-DD hh:mm:ss</td><td>省略可能</td></tr>
+	    <tr><td>e:終了日時</td><td>YYYY-MM-DD hh:mm:ss</td><td>省略可能</td></tr>
+	    <tr><td>l:出力レコード数</td><td>正数</td><td>省略可能</td></tr>
+	    <tr><td rowspan="2">r:出力順序</td><td>無記入</td><td>日時の昇べき</td></tr>
+	    <tr><td>r=yes</td><td>日時の降べき</td></tr>
+	    <tr><td rowspan="2">csv:出力書式</td><td>無記入</td><td>JSON</td></tr>
+	    <tr><td>csv=yes</td><td>CSV</td></tr>
+	    <tr><td>i:IPアドレス</td><td>IPアドレス(IPv4)</td><td>省略不可</td></tr>
+	  </table>
+	  <p>[...]内は省略可能。省略時の値は以下の通り<br>
+	    <ul>
+	      <li>開始日時：終了時刻の24時間前</li>
+	      <li>終了日時：現在日時</li>
+	      <li>出力レコード数：100レコード</li>
+	      <li>出力順序：昇べき</li>
+	      <li>出力書式：JSON</li>
+	    </ul>
+	  </p>
+	  <p class="wakucaption">出力書式(JSON)</p>
+	  <p class="waku">
+	    {"tod":"2023-10-13 22:59:05","ccmtype":"cnd.mIC","room":"1","region":"2","ord":"11","priority":"15","value":"0","ip":"192.168.120.150","id":"741081208"},
+	  </p>
+	  <p class="wakucaption">出力書式(CSV)</p>
+	  <p class="waku">
+tod,ccmtype,room,region,ord,priority,ip,value,id<br/>
+2023-10-13 23:27:01,cnd.mIC,1,2,11,15,192.168.120.150,0,741127706<br/>
+2023-10-13 23:27:02,cnd.mIC,1,2,11,15,192.168.120.150,0,741127763<br/>
+	  </p>  
+	</div>
+      </div>
+      <!--- 左側サイドメニュー --->
+      <div id="left">
+	<div class="left-title">サイドバータイトル</div>
+        <div class="link">
+          <ul>
+            <li><a href="https://www.uecs.jp/" target="UECSJP">UECS研究会</a></li>
+	    <li><a href="https://www.smart-agri.jp/~horimoto/uecs/doc/" target="UECSME">UECSドキュメント</a></li>
+            <li>記事ページへのリンク</li>
+          </ul>
+        </div>
+      </div>
+      <div id="footer">© 2023 Masafumi Horimoto</div>
+    </div>
+  </body>
+</html>
